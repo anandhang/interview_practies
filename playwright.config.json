@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    {
+      "name": "html reporter",
+      "outputFolder": "test-results",
+      "open": "always"
+    }
+  ],
+  "webServer": {
+    "command": "npm start",
+    "url": "http://localhost:3000",
+    "reuseExistingServer": false
+  },
+  "use": {
+    "baseURL": "https://example.com",
+    "screenshot": "only-on-failure",
+    "trace": "on-first-retry",
+    "video": "retain-on-failure"
+  }
+}
