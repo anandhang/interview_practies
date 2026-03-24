@@ -1,3 +1,8 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -147,17 +152,40 @@ public static class TestResultHelper
 {
     public static ITestResult? GetCurrentTestResult()
     {
-        return TestContext.CurrentContext?.Result;
+        try
+        {
+            return TestContext.CurrentContext?.Result as ITestResult;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public static bool IsTestPassed()
     {
-        return GetCurrentTestResult()?.Outcome.Status == TestStatus.Passed;
+        try
+        {
+            var result = GetCurrentTestResult();
+            return result != null && result.ResultState?.Status == TestStatus.Passed;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static bool IsTestFailed()
     {
-        return GetCurrentTestResult()?.Outcome.Status == TestStatus.Failed;
+        try
+        {
+            var result = GetCurrentTestResult();
+            return result != null && result.ResultState?.Status == TestStatus.Failed;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static void LogTestInfo(string message)

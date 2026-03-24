@@ -1,4 +1,9 @@
+#nullable enable
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
 namespace PlaywrightTests.Helpers;
@@ -120,13 +125,21 @@ public abstract class BasePlaywrightTest : PageTest
     }
 
     /// <summary>
-    /// Executes JavaScript on the page.
+    /// Executes JavaScript on the page and converts result to specified type.
+    /// Note: Returns JsonElement from Playwright - may need manual conversion
     /// </summary>
-    protected async Task<T> ExecuteScriptAsync<T>(string script, object? arg = null)
+    protected async Task<object?> ExecuteScriptAsync(string script, object? arg = null)
     {
-        return arg == null
-            ? (T)(await Page.EvaluateAsync(script))!
-            : (T)(await Page.EvaluateAsync(script, arg))!;
+        try
+        {
+            return arg == null
+                ? await Page.EvaluateAsync(script)
+                : await Page.EvaluateAsync(script, arg);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>

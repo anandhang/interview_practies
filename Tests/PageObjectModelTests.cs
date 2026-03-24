@@ -1,4 +1,7 @@
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 using PlaywrightTests.PageObjects;
 
@@ -28,7 +31,7 @@ public class PageObjectModelTests : PageTest
 
         // Assert
         Assert.That(await _loginPage.IsWelcomeMessageVisibleAsync(), Is.True);
-        await Expect(_loginPage.GetPage()).ToHaveURLAsync(new RegexPatternMatcher(new Regex(".*/dashboard")));
+        await Expect(_loginPage.GetPage()).ToHaveURLAsync(new Regex(".*/dashboard"));
     }
 
     [Test]

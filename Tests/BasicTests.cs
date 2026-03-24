@@ -1,4 +1,9 @@
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
 namespace PlaywrightTests.Tests;
@@ -8,6 +13,8 @@ public class BasicTests : PageTest
 {
     private const string BaseUrl = "https://example.com";
 
+    [TestCase("BT-001", "Navigation", "test1")]
+    [Category("sampletest1")]
     [Test]
     public async Task ShouldNavigateToPageAndVerifyTitle()
     {
@@ -15,9 +22,11 @@ public class BasicTests : PageTest
         await Page.GotoAsync(BaseUrl);
 
         // Assert
-        await Expect(Page).ToHaveTitleAsync(new RegexPatternMatcher(new Regex("Example")));
+        await Expect(Page).ToHaveTitleAsync(new Regex("Example"));
     }
 
+    [TestCase("BT-002", "UI Interaction", "test1")]
+    [Category("sampletest1")]
     [Test]
     public async Task ShouldDisplayAndInteractWithButton()
     {
@@ -34,6 +43,8 @@ public class BasicTests : PageTest
         await button.ClickAsync();
     }
 
+    [TestCase("BT-003", "Element Verification", "test1")]
+    [Category("sampletest1")]
     [Test]
     public async Task ShouldVerifyElementText()
     {
@@ -44,6 +55,8 @@ public class BasicTests : PageTest
         await Expect(Page.Locator("h1")).ToContainTextAsync("Welcome");
     }
 
+    [TestCase("BT-004", "Attribute Verification", "test1")]
+    [Category("sampletest1")]
     [Test]
     public async Task ShouldVerifyElementAttributeValue()
     {
@@ -145,7 +158,7 @@ public class BasicTests : PageTest
         var button = Page.Locator("button");
 
         // Assert
-        await Expect(button).ToHaveClassAsync(new RegexPatternMatcher(new Regex("hover")));
+        await Expect(button).ToHaveClassAsync(new Regex("hover"));
 
         // Act - Double click
         await button.DblClickAsync();

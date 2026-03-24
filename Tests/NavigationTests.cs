@@ -1,4 +1,7 @@
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
 namespace PlaywrightTests.Tests;
@@ -18,7 +21,7 @@ public class NavigationTests : PageTest
         await Page.ClickAsync("a:has-text('About')");
 
         // Assert
-        await Expect(Page).ToHaveURLAsync(new RegexPatternMatcher(new Regex(".*/about")));
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/about"));
     }
 
     [Test]
@@ -47,7 +50,7 @@ public class NavigationTests : PageTest
         await Page.GoForwardAsync();
 
         // Assert
-        await Expect(Page).ToHaveURLAsync(new RegexPatternMatcher(new Regex(".*/about")));
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/about"));
     }
 
     [Test]
@@ -63,7 +66,7 @@ public class NavigationTests : PageTest
 
         // Assert
         Assert.That(response?.Status, Is.EqualTo(200));
-        await Expect(Page).ToHaveURLAsync(new RegexPatternMatcher(new Regex(".*/product")));
+        await Expect(Page).ToHaveURLAsync(new Regex(".*/product"));
     }
 
     [Test]
@@ -120,7 +123,7 @@ public class NavigationTests : PageTest
         await Page.GotoAsync(BaseUrl);
 
         // Act & Assert
-        var urlPattern = new RegexPatternMatcher(new Regex("example\\.com"));
+        var urlPattern = new Regex("example\\.com");
         await Expect(Page).ToHaveURLAsync(urlPattern);
     }
 }
